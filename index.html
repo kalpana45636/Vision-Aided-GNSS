@@ -16,11 +16,12 @@
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="styles.css">
+    <!-- Custom CSS — ?v=3 forces browser to reload instead of using cache -->
+    <link rel="stylesheet" href="styles.css?v=4">
 </head>
 <body>
-    <!-- Background Animation Elements -->
+
+    <!-- Background Animation -->
     <div class="background-animation">
         <div class="stars"></div>
         <div class="grid"></div>
@@ -30,7 +31,8 @@
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="logo">
-            <i class="fa-solid fa-satellite-dish"></i> <span>GNSS<span class="highlight">Vision</span></span>
+            <i class="fa-solid fa-satellite-dish"></i>
+            <span>GNSS<span class="highlight">Vision</span></span>
         </div>
         <ul class="nav-links">
             <li><a href="#home">Home</a></li>
@@ -48,7 +50,7 @@
         <div class="hero-content">
             <h1>VISION-AIDED <span class="highlight">GNSS</span></h1>
             <h2>FOR PRECISION NAVIGATION</h2>
-            <p>The summary of soluton is combining both gnss and camera to give accurate and precise location, positiion</p>
+            <p>Combining GNSS satellite signals with onboard cameras for accurate, continuous positioning — even in GPS-denied environments.</p>
             <div class="hero-buttons">
                 <a href="#integrated-workspace" class="btn btn-primary">Start Navigation</a>
                 <a href="#about" class="btn btn-secondary">Learn More</a>
@@ -118,57 +120,71 @@
         <div class="container">
             <h2 class="section-title">Integrated Navigation Module</h2>
             <div class="integrated-grid">
-                
-                <!-- Left Side: Camera & Controls -->
+
+                <!-- Left: Camera + GPS Info + Controls -->
                 <div class="workspace-column glass-card">
                     <div class="viewer-header">
                         <h3><i class="fa-solid fa-camera-retro"></i> Live Vision Feed</h3>
-                        <div class="system-status alert-status mini-status" id="system-status">
-                            <i class="fa-solid fa-circle-check pulse-icon"></i> Optimal
-                        </div>
-                    </div>
-                    
-                    <div class="camera-container" id="camera-container">
-                        <!-- Camera Feed -->
-                        <video id="camera-feed" autoplay playsinline></video>
-                        <canvas id="capture-canvas" style="display: none;"></canvas>
-                        
-                        <!-- Overlay Text on Camera -->
-                        <div class="camera-overlay">
-                            <div class="overlay-row"><span class="overlay-label">LAT:</span> <span id="cam-lat">--.-----</span>°</div>
-                            <div class="overlay-row"><span class="overlay-label">LON:</span> <span id="cam-lng">--.-----</span>°</div>
-                            <div class="overlay-row"><span class="overlay-label">TIME:</span> <span id="cam-time">--:--:--</span></div>
+                        <div class="mini-status" id="system-status" style="color:#f59e0b;">
+                            <i class="fa-solid fa-spinner fa-spin"></i> Acquiring GPS…
                         </div>
                     </div>
 
+                    <!-- Camera preview -->
+                    <div class="camera-container" id="camera-container">
+                        <video id="camera-feed" autoplay playsinline muted></video>
+                        <canvas id="capture-canvas" style="display:none;"></canvas>
+
+                        <!-- GPS overlay on camera -->
+                        <div class="camera-overlay">
+                            <div class="overlay-row">
+                                <span class="overlay-label">LAT:</span>
+                                <span id="cam-lat">Acquiring…</span>
+                            </div>
+                            <div class="overlay-row">
+                                <span class="overlay-label">LON:</span>
+                                <span id="cam-lng">Acquiring…</span>
+                            </div>
+                            <div class="overlay-row">
+                                <span class="overlay-label">ACC:</span>
+                                <span id="cam-acc">--</span>
+                            </div>
+                            <div class="overlay-row">
+                                <span class="overlay-label">TIME:</span>
+                                <span id="cam-time">--:--:--</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Buttons -->
                     <div class="camera-controls">
                         <button class="btn btn-primary full-width" id="capture-btn">
                             <i class="fa-solid fa-camera"></i> Capture Photo
                         </button>
-                        <button class="btn btn-secondary full-width mt-10" id="upload-btn">
+                        <button class="btn btn-secondary full-width" id="upload-btn">
                             <i class="fa-solid fa-upload"></i> Upload Image
                         </button>
                         <input type="file" id="image-upload" accept="image/*" hidden>
                     </div>
                 </div>
 
-                <!-- Right Side: Navigation Map -->
+                <!-- Right: Map -->
                 <div class="workspace-column glass-card map-column">
                     <div class="viewer-header">
                         <h3><i class="fa-solid fa-map-location-dot"></i> Real-time Map</h3>
                         <span class="badge badge-live">● LIVE</span>
                     </div>
                     <div class="map-container-inner" id="navigation-map"></div>
-                    <button class="btn btn-primary full-width mt-10" id="reset-path-btn" style="background: #ef4444; box-shadow: 0 0 15px rgba(239, 68, 68, 0.3); border: none;">
-                        Reset Path
+                    <button class="btn full-width reset-btn" id="reset-path-btn">
+                        <i class="fa-solid fa-rotate-left"></i> Reset Path
                     </button>
                 </div>
-                
+
             </div>
         </div>
     </section>
 
-    <!-- 7. Results Section -->
+    <!-- 5. Results Section -->
     <section id="results" class="section">
         <div class="container">
             <h2 class="section-title">Performance Metrics</h2>
@@ -187,7 +203,7 @@
         </div>
     </section>
 
-    <!-- 8. Contact Section -->
+    <!-- 6. Contact Section -->
     <section id="contact" class="section footer-bg">
         <div class="container">
             <h2 class="section-title">Join The Team</h2>
@@ -223,10 +239,10 @@
         </footer>
     </section>
 
-    <!-- Scripts -->
+    <!-- Scripts — ?v=3 busts the browser cache -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
-    <script src="script.js"></script>
+    <script src="script.js?v=4"></script>
 </body>
 </html>
